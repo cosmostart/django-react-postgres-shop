@@ -19,7 +19,7 @@ function Header() {
     });
 
     var sumDiscount = 0;
-    cartData.map((item, index) => {
+    cartData?.map((item, index) => {
         sumDiscount += parseInt(item.product.discount);
     });
 
@@ -103,7 +103,7 @@ function Header() {
           <img src={cartTop}></img>
           <img src={cartBottom}></img>
         </div>
-        <Link to="/checkout" className="nav-link d-flex flex-row align-items-center" style={{margin: 0}}>{sumDiscount} &#8381; / {cartData.length} шт.</Link>
+        <Link to="/checkout" className="nav-link d-flex flex-row align-items-center" style={{margin: 0}}>{sumDiscount} &#8381; / {cartData?.length} шт.</Link>
       </div>
     </nav>
     </>

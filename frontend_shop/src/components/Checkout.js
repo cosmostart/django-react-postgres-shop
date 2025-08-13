@@ -23,7 +23,7 @@ function Checkout(props) {
     var sum = 0;
     var sumDiscount = 0;
     var howMany = 0
-    cartData.map((item, index) => {
+    cartData?.map((item, index) => {
         sum += parseInt(item.product.price);
         sumDiscount += parseInt(item.product.discount);
         howMany = index + 1;
