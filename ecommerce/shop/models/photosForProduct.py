@@ -3,7 +3,7 @@ from ..models.product import Product
 
 
 class PhotosForProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар', related_name='product_imgs')
+    product = models.ForeignKey(Product, unique=True, on_delete=models.CASCADE, verbose_name='Товар', related_name='product_imgs')
     image1 = models.ImageField(verbose_name='Фото')
     image2 = models.ImageField(verbose_name='Фото', blank=True, null=True)
     image3 = models.ImageField(verbose_name='Фото', blank=True, null=True)

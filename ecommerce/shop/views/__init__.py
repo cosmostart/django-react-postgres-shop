@@ -8,3 +8,4 @@ from .orderList import OrderList
 from .orderDetail import OrderDetail
 from .customer_login import customer_login
 from .customer_register import customer_register
+from .customer_order import customer_order
