@@ -1,17 +1,18 @@
 from rest_framework import generics
-from ..models import Category
-from ..serializers import CategoryListSerializer
+from rest_framework.exceptions import NotFound, ValidationError, APIException
+from ..services import CategoryService
+from ..serializers import CategorySerializer
 
 
 class CategoryList(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategoryListSerializer
+    serializer_class = CategorySerializer
 
     def get_queryset(self):
-        qs = super().get_queryset()
-        if 'fetch_limit' in self.request.GET:
-            limit = int(self.request.GET['fetch_limit'])
-            #Category.objects.filter(level='1')
-            qs = qs.filter(level='1', status='Да')
-            qs = qs[:limit]
-        return qs
+        level = self.request.GET['level']
+        status = self.request.GET['status']
+        if not level and not status:
+            raise APIException("level/status is required to fetch main categories.")
+        try:
+            return CategoryService.get_categories_by_level_status(level, status)
+        except ValueError:
+            raise APIException("Invalid level/status format.")

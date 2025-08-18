@@ -1,65 +1,57 @@
 from django.contrib import admin
 from django_mptt_admin.admin import DjangoMpttAdmin
-from .models.category import Category
-from .models.color import Color
-from .models.landingSlide import LandingSlide
-from .models.contacts import Contacts
-from .models.product import Product
-from .models.socialNets import SocialNets
-from .models.photosForProduct import PhotosForProduct
-from .models.customer import Customer
-from .models.order import Order
-from .models.orderItems import OrderItems
+from .models import *
 
 
+def deleteProhibit(class_to_decorate):
+    class DeleteProhibit(class_to_decorate):
+        def has_delete_permission(self, request, obj=None):  # запрет на удаление
+            return False
+    return DeleteProhibit
+
+
+def addProhibit(class_to_decorate):
+    class AddProhibit(class_to_decorate):
+        def has_add_permission(self, request, obj=None):  # запрет на добавление
+            return False
+    return AddProhibit
+
+
+def changeProhibit(class_to_decorate):
+    class ChangeProhibit(class_to_decorate):
+        def has_change_permission(self, request, obj=None):  # запрет на редактирование
+            return False
+    return ChangeProhibit
+
+
+@admin.register(Category)
+@deleteProhibit
+@addProhibit
 class CategoryAdmin(DjangoMpttAdmin):
     readonly_fields = ('name',)
-
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
-
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
-
-
-class AddDeleteProhibit(admin.ModelAdmin):
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
-
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
 
 
 class SocialsInline(admin.StackedInline):
     model = SocialNets
     extra = 0
 
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
 
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
-
-
+@admin.register(Contacts)
+@deleteProhibit
+@addProhibit
 class ContactsAdmin(admin.ModelAdmin):
     inlines = [
         SocialsInline,
     ]
 
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
-
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
-
-
+@deleteProhibit
 class PhotosInline(admin.StackedInline):
     model = PhotosForProduct
 
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
 
-
+@admin.register(Product)
+@deleteProhibit
+@addProhibit
 class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('name',)
     list_display = ('name_for_site', 'article', 'category', 'show_on_site')
@@ -68,18 +60,11 @@ class ProductAdmin(admin.ModelAdmin):
         PhotosInline,
     ]
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'category':
-            kwargs['queryset'] = Category.objects.filter(level='1')
-        return super(ProductAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
-
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
-
-
+@admin.register(Customer)
+@changeProhibit
+@deleteProhibit
+@addProhibit
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('get_reg_date', 'get_first_name', 'get_last_name', 'mobile', 'get_email')
 
@@ -103,15 +88,6 @@ class CustomerAdmin(admin.ModelAdmin):
 
     get_email.short_description = 'Email'
 
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
-
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
-
-    def has_change_permission(self, request, obj=None):  # запрет на редактирование
-        return False
-
 
 class ItemsInline(admin.StackedInline):
     model = OrderItems
@@ -119,8 +95,12 @@ class ItemsInline(admin.StackedInline):
     extra = 0
 
 
+@admin.register(Order)
+@changeProhibit
+@deleteProhibit
+@addProhibit
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_time', 'order_number', 'get_first_name', 'get_email', 'get_phone', 'order_type', 'discount_sum', 'total_sum')
+    list_display = ('order_time', 'order_number', 'get_first_name', 'get_email', 'get_phone', 'order_type', 'address', 'discount_sum', 'total_sum')
     inlines = [
         ItemsInline,
     ]
@@ -140,20 +120,5 @@ class OrderAdmin(admin.ModelAdmin):
 
     get_phone.short_description = 'Телефон'
 
-    def has_add_permission(self, request, obj=None):  # запрет на добавление
-        return False
 
-    def has_delete_permission(self, request, obj=None):  # запрет на удаление
-        return False
-
-    def has_change_permission(self, request, obj=None):  # запрет на редактирование
-        return False
-
-
-admin.site.register(Category, CategoryAdmin)
 admin.site.register(Color)
-admin.site.register(LandingSlide, AddDeleteProhibit)
-admin.site.register(Contacts, ContactsAdmin)
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Customer, CustomerAdmin)
-admin.site.register(Order, OrderAdmin)

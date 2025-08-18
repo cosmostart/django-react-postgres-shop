@@ -1,12 +1,12 @@
 from django.db.models import Q
 from rest_framework import generics, pagination
 from ..models import Product, Category
-from ..serializers import ProductListSerializer
+from ..serializers import ProductSerializer
 
 
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductListSerializer
+    serializer_class = ProductSerializer
     pagination_class = pagination.PageNumberPagination
 
     def get_queryset(self):

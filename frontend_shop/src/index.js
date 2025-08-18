@@ -13,12 +13,13 @@ const customerFirstName = localStorage.getItem('customer_firstname');
 const customerLastName = localStorage.getItem('customer_lastname');
 const customerEmail = localStorage.getItem('customer_email');
 const customerPhone = localStorage.getItem('customer_phone');
+const customerAddress = localStorage.getItem('customer_address');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      <UserContext.Provider value={[checkCustomer, customerUsername, customerId, customerFirstName, customerLastName, customerEmail, customerPhone]}>
+      <UserContext.Provider value={[checkCustomer, customerUsername, customerId, customerFirstName, customerLastName, customerEmail, customerPhone, customerAddress]}>
         <App />
       </UserContext.Provider>
     </Router>

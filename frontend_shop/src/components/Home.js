@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
 import './Home.css';
-import { Link } from 'react-router-dom';
 import SingleProduct from './SingleProduct';
 import SingleCategory from './SingleCategory';
 import SingleCategoryLarger from './SingleCategoryLarger';
 
 function Home() {
     const baseUrl = 'http://127.0.0.1:8000/api/';
+
     const [products, setProducts]=useState([]);
-
     useEffect(() => {
-        fetchData(baseUrl + 'products/?fetch_limit=8');
+        fetchData(baseUrl + 'products');
     }, []);
-
     function fetchData(baseurl) {
         fetch(baseurl)
         .then((response)=>response.json())
@@ -21,9 +19,8 @@ function Home() {
 
     const [categories, setCategories]=useState([]);
     useEffect(() => {
-        fetchData1(baseUrl + 'categories/?fetch_limit=8');
+        fetchData1(baseUrl + 'categories/?level=1&status=Да');
     }, []);
-
     function fetchData1(baseurl) {
         fetch(baseurl)
         .then((response)=>response.json())
@@ -77,37 +74,6 @@ function Home() {
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
-
-            {/*<div id="carouselExampleControls" className="carousel slide bg-black text-white" data-bs-ride="carousel">
-            <div className="carousel-inner">
-                <div className="carousel-item active">
-                <blockquote className="blockquote text-center">
-            <p className="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
-                </div>
-                <div className="carousel-item">
-                <blockquote className="blockquote text-center">
-            <p className="mb-0">tttttt, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
-                </div>
-                <div className="carousel-item">
-                <blockquote className="blockquote text-center">
-            <p className="mb-0">kkkkk. Integer posuere erat a ante.</p>
-            <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
-                </div>
-            </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Previous</span>
-            </button>
-            <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Next</span>
-            </button>
-                    </div>*/}
         </div>
     </main>
     )

@@ -39,7 +39,8 @@ function Login(props) {
                 localStorage.setItem('customer_firstname', response.data.user_firstname);
                 localStorage.setItem('customer_lastname', response.data.user_lastname);
                 localStorage.setItem('customer_email', response.data.user_email);
-                localStorage.setItem('customer_phone', response.data.user_phone);
+                localStorage.setItem('customer_phone', response.data.phone);
+                localStorage.setItem('customer_address', response.data.address);
                 setFormError(false);
                 setErrorMsg('');
             }

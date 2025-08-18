@@ -6,6 +6,7 @@ from .customerList import CustomerList
 from .customerDetail import CustomerDetail
 from .orderList import OrderList
 from .orderDetail import OrderDetail
-from .customer_login import customer_login
-from .customer_register import customer_register
-from .customer_order import customer_order
+from .customerLogin import customer_login
+from .customerRegister import customer_register
+from .customerOrder import customer_order
+from .contactsDetail import ContactsDetail

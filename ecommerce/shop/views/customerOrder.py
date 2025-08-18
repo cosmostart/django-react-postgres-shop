@@ -10,6 +10,7 @@ def customer_order(request):
     user_id = request.POST.get('user_id')
     user_cartNumber = request.POST.get('user_cartNumber')
     order_type = request.POST.get('order_type')
+    address = request.POST.get('address')
     discount_sum = request.POST.get('discount_sum')
     total_sum = request.POST.get('total_sum')
     comment = request.POST.get('comment')
@@ -22,6 +23,7 @@ def customer_order(request):
         customer=Customer.objects.get(user=user_id),
         cart_number=user_cartNumber,
         order_type=order_type,
+        address=address,
         discount_sum=discount_sum,
         total_sum=total_sum,
         comment=comment

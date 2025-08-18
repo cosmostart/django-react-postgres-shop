@@ -1,8 +1,10 @@
 from rest_framework import generics
-from ..models import Category
-from ..serializers import CategoryDetailSerializer
+from ..services import CategoryService
+from ..serializers import CategorySerializer
 
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategoryDetailSerializer
+    serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return CategoryService.get_all_categories()

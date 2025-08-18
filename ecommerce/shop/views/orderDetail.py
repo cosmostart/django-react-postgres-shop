@@ -1,10 +1,10 @@
 from rest_framework import generics
 from ..models import Order, OrderItems
-from ..serializers import OrderDetailSerializer
+from ..serializers import OrderSerializer
 
 
 class OrderDetail(generics.ListCreateAPIView):
-    serializer_class = OrderDetailSerializer
+    serializer_class = OrderSerializer
 
     def get_queryset(self):
         order_id = self.kwargs['pk']

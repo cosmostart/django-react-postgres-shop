@@ -12,8 +12,10 @@ function MakeOrder(props) {
     const [successMsg, setSuccessMsg] = useState('');
     const [orderType, setOrderType] = useState({
         "flexRadioDefault": '',
+        "address": userContext[7],
         "comment": ''
     });
+    //const [address, setAddress] = useState(userContext[7]);
 
     if (userContext[0] !== 'true') {
         window.location.href = '/customer/login';
@@ -32,15 +34,17 @@ function MakeOrder(props) {
         const handleChange = (event) => {
             setOrderType({
                 ...orderType,
+                [event.target.name]: event.target.value,
                 [event.target.name]: event.target.value
             })
-          };
+        };
 
         const submitHandler = (event) => {
             const formData = new FormData();
             formData.append('user_id', userContext[2]);
             formData.append('user_cartNumber', cartData.length);
             formData.append('order_type', orderType.flexRadioDefault);
+            formData.append('address', orderType.address);
             formData.append('discount_sum', sum - sumDiscount);
             formData.append('total_sum', sumDiscount);
             formData.append('comment', orderType.comment);
@@ -60,6 +64,7 @@ function MakeOrder(props) {
                         ele[i].checked = false;
                     setOrderType({
                         "flexRadioDefault": '',
+                        "address": '',
                         "comment": ''
                     });
                     setFormError(false);
@@ -71,7 +76,7 @@ function MakeOrder(props) {
                 console.log(error);
             })
         };
-        console.log(orderType.flexRadioDefault);
+        //console.log(orderType.flexRadioDefault);
 
         const buttonEnable = (orderType.flexRadioDefault !== '')
 
@@ -117,12 +122,13 @@ function MakeOrder(props) {
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Самовывоз
                                 </label>
-                                </div>
-                                <div class="form-check">
+                            </div>
+                            <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value={'Доставка'} onChange={handleChange}/>
                                 <label class="form-check-label" for="flexRadioDefault2">
                                     Доставка
                                 </label>
+                                <input type="address" name="address" value={orderType.address} className="form-control" id="address" onChange={handleChange}/>
                             </div>
                             <div className="mb-3 mt-3">
                                 <label for="mobile" className="form-label">Комментарий</label>

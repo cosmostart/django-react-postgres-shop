@@ -18,6 +18,7 @@ class Order(models.Model):
         ('Доставка', 'Доставка')
     )
     order_type = models.CharField(verbose_name='Способ получения', choices=STATUS, default='Самовывоз')
+    address = models.CharField(verbose_name='Адрес', max_length=150, default='')
     order_number = models.IntegerField(verbose_name='Номер', default=number) #models.AutoField(primary_key=True)
     discount_sum = models.IntegerField(verbose_name='Сумма скидок', default=0)
     total_sum = models.IntegerField(verbose_name='Cумма с учётом скидок', default=0)

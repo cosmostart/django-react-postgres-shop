@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -16,6 +15,7 @@ function Register(props) {
         "last_name": '',
         "username": '',
         "email": '',
+        "address": '',
         "mobile": '',
         "password": ''
     });
@@ -73,6 +73,7 @@ function Register(props) {
         formData.append('last_name', registerFormData.last_name);
         formData.append('username', registerFormData.username);
         formData.append('email', registerFormData.email);
+        formData.append('address', registerFormData.address);
         formData.append('mobile', registerFormData.mobile.replace(/\D/g,''));
         formData.append('password', registerFormData.password);
 
@@ -88,6 +89,7 @@ function Register(props) {
                     "last_name": '',
                     "username": '',
                     "email": '',
+                    "address": '',
                     "mobile": '',
                     "password": ''
                 });
@@ -131,6 +133,10 @@ function Register(props) {
                             <div className="mb-3">
                                 <label for="email" className="form-label">Email</label>
                                 <input type="email" name="email" value={registerFormData.email} onChange={inputHandler} className="form-control" id="email"/>
+                            </div>
+                            <div className="mb-3">
+                                <label for="address" className="form-label">Адрес</label>
+                                <input type="address" name="address" value={registerFormData.address} onChange={inputHandler} className="form-control" id="address"/>
                             </div>
                             <div className="mb-3">
                                 <label for="mobile" className="form-label">Телефон</label>
