@@ -19,7 +19,7 @@ class ChangeProhibit:
 
 
 @admin.register(Category)
-class CategoryAdmin(DjangoMpttAdmin, AddProhibit, DeleteProhibit):
+class CategoryAdmin(AddProhibit, DeleteProhibit, DjangoMpttAdmin):
     readonly_fields = ('name',)
 
 
@@ -55,7 +55,7 @@ class ProductAdmin(AddProhibit, DeleteProhibit, admin.ModelAdmin):
 
 
 @admin.register(Customer)
-class CustomerAdmin(AddProhibit, DeleteProhibit, ChangeProhibit, admin.ModelAdmin, ):
+class CustomerAdmin(AddProhibit, DeleteProhibit, ChangeProhibit, admin.ModelAdmin):
     list_display = ('get_reg_date', 'get_first_name', 'get_last_name', 'mobile', 'get_email')
 
     def get_reg_date(self, obj):
