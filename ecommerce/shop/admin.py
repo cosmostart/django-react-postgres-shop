@@ -3,31 +3,23 @@ from django_mptt_admin.admin import DjangoMpttAdmin
 from .models import *
 
 
-def deleteProhibit(class_to_decorate):
-    class DeleteProhibit(class_to_decorate):
-        def has_delete_permission(self, request, obj=None):  # запрет на удаление
-            return False
-    return DeleteProhibit
+class AddProhibit:
+    def has_add_permission(self, request, obj=None):  # запрет на добавление
+        return False
 
 
-def addProhibit(class_to_decorate):
-    class AddProhibit(class_to_decorate):
-        def has_add_permission(self, request, obj=None):  # запрет на добавление
-            return False
-    return AddProhibit
+class DeleteProhibit:
+    def has_delete_permission(self, request, obj=None):  # запрет на удаление
+        return False
 
 
-def changeProhibit(class_to_decorate):
-    class ChangeProhibit(class_to_decorate):
-        def has_change_permission(self, request, obj=None):  # запрет на редактирование
-            return False
-    return ChangeProhibit
+class ChangeProhibit:
+    def has_change_permission(self, request, obj=None):  # запрет на редактирование
+        return False
 
 
 @admin.register(Category)
-@deleteProhibit
-@addProhibit
-class CategoryAdmin(DjangoMpttAdmin):
+class CategoryAdmin(DjangoMpttAdmin, AddProhibit, DeleteProhibit):
     readonly_fields = ('name',)
 
 
@@ -37,22 +29,18 @@ class SocialsInline(admin.StackedInline):
 
 
 @admin.register(Contacts)
-@deleteProhibit
-@addProhibit
-class ContactsAdmin(admin.ModelAdmin):
+class ContactsAdmin(AddProhibit, DeleteProhibit, admin.ModelAdmin):
     inlines = [
         SocialsInline,
     ]
 
-@deleteProhibit
-class PhotosInline(admin.StackedInline):
+
+class PhotosInline(DeleteProhibit, admin.StackedInline):
     model = PhotosForProduct
 
 
 @admin.register(Product)
-@deleteProhibit
-@addProhibit
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(AddProhibit, DeleteProhibit, admin.ModelAdmin):
     readonly_fields = ('name',)
     list_display = ('name_for_site', 'article', 'category', 'show_on_site')
     list_filter = ('name_for_site', 'category')
@@ -60,12 +48,14 @@ class ProductAdmin(admin.ModelAdmin):
         PhotosInline,
     ]
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'category':
+            kwargs['queryset'] = Category.objects.filter(level='1')
+        return super(ProductAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(Customer)
-@changeProhibit
-@deleteProhibit
-@addProhibit
-class CustomerAdmin(admin.ModelAdmin):
+class CustomerAdmin(AddProhibit, DeleteProhibit, ChangeProhibit, admin.ModelAdmin, ):
     list_display = ('get_reg_date', 'get_first_name', 'get_last_name', 'mobile', 'get_email')
 
     def get_reg_date(self, obj):
@@ -96,10 +86,7 @@ class ItemsInline(admin.StackedInline):
 
 
 @admin.register(Order)
-@changeProhibit
-@deleteProhibit
-@addProhibit
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(AddProhibit, DeleteProhibit, ChangeProhibit, admin.ModelAdmin):
     list_display = ('order_time', 'order_number', 'get_first_name', 'get_email', 'get_phone', 'order_type', 'address', 'discount_sum', 'total_sum')
     inlines = [
         ItemsInline,
